@@ -61,10 +61,12 @@ class Graph:
 			print('Input file does not contain the correct number of arguments')
 		else:
 			for c in range(len(lines)):
-				if int(lines[c]) >= 0 and int(lines[c]) <= 9:
+				if int(lines[c]) >= 0 and int(lines[c]) <= (self.size**2):
 					y = int(c/(self.size**2))
 					x = c - (y*(self.size**2))
 					self.vertices[y][x] = int(lines[c])
+				else:
+					print('Invalid input, all arguments must be numbers between 0 and size squared (inclusive).')
 				
 
 

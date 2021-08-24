@@ -68,15 +68,18 @@ class Graph:
 				else:
 					print('Invalid input, all arguments must be numbers between 0 and size squared (inclusive).')
 				
-
-
-	#todo: second constructor that reads from a file.
-	#todo: test __str__ after writing second constructor.
-
 g = Graph(3)
 g.initial_assignment('9by9_1.txt')
+#g.initial_assignment('9by9_2.txt')
 print(g)
 
 h = Graph(2)
 h.initial_assignment('4by4_1.txt')
+#h.initial_assignment('4by4_2.txt')
 print(h)
+
+i = Graph(4)
+i.initial_assignment('16by16_1.txt')
+print(i)
+
+#TODO: figure out how to throw exceptions

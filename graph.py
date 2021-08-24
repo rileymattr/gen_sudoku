@@ -1,7 +1,9 @@
 class Graph:
 	def __init__(self, n: int):
 		self.size = n
-		self.vertices = [[0]*(n**2)]*(n**2)
+		self.vertices = []
+		for i in range(self.size**2):
+			self.vertices.append([0]*(self.size**2))
 		self.edges = []
 		for i in range(self.size**4):
 			self.edges.append([])
@@ -52,8 +54,27 @@ class Graph:
 			
 		return board
 
+	def initial_assignment(self, file_name):
+		f = open(file_name)
+		lines = f.read().split()
+		if len(lines) != (self.size**4):
+			print('Input file does not contain the correct number of arguments')
+		else:
+			for c in range(len(lines)):
+				if int(lines[c]) >= 0 and int(lines[c]) <= 9:
+					y = int(c/(self.size**2))
+					x = c - (y*(self.size**2))
+					self.vertices[y][x] = int(lines[c])
+				
+
+
 	#todo: second constructor that reads from a file.
 	#todo: test __str__ after writing second constructor.
 
 g = Graph(3)
+g.initial_assignment('9by9_1.txt')
 print(g)
+
+h = Graph(2)
+h.initial_assignment('4by4_1.txt')
+print(h)

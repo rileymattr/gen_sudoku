@@ -58,7 +58,7 @@ class Graph:
 		f = open(file_name)
 		lines = f.read().split()
 		if len(lines) != (self.size**4):
-			print('Input file does not contain the correct number of arguments')
+			raise Exception('The given file does not contain the correct number of arguments.')
 		else:
 			for c in range(len(lines)):
 				if int(lines[c]) >= 0 and int(lines[c]) <= (self.size**2):
@@ -66,5 +66,4 @@ class Graph:
 					x = c - (y*(self.size**2))
 					self.vertices[y][x] = int(lines[c])
 				else:
-					print('Invalid input, all arguments must be numbers between 0 and size squared (inclusive).')
-#TODO: figure out how to throw exceptions
+					raise Exception('The given file contains invalid arguments.')

@@ -1,5 +1,6 @@
 class Graph:
 	def __init__(self, n: int):
+		#Degree of a vertex is 2((n**2)-1)+(n**2)-2n+1
 		self.size = n
 		self.vertices = []
 		for i in range(self.size**2):
@@ -7,6 +8,11 @@ class Graph:
 		self.edges = []
 		for i in range(self.size**4):
 			self.edges.append([])
+		
+		#This will be used to dynamically track the saturation degree of each vertex, by tracking the size of the set of colors a vertex is adjacent to.
+		self.sat_degree = []
+		for i in range(self.size**4):
+			self.sat_degree.append(set())
 
 		for y in range(self.size**2):
 			for x in range(self.size**2):
@@ -65,5 +71,9 @@ class Graph:
 					y = int(c/(self.size**2))
 					x = c - (y*(self.size**2))
 					self.vertices[y][x] = int(lines[c])
+					if int(lines[c]) != 0:
+						for v in self.edges[c]:
+							self.sat_degree[((self.size**2)*v[0])+v[1]].add(int(lines[c]))
+
 				else:
 					raise Exception('The given file contains invalid arguments.')

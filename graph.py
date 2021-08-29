@@ -5,34 +5,36 @@ class Graph:
 		self.vertices = [0]*(self.size**4)
 		self.edges = []
 		for i in range(self.size**4):
-			self.edges.append([])
+			self.edges.append(set())
 		
 		#This will be used to dynamically track the saturation degree of each vertex, by tracking the size of the set of colors a vertex is adjacent to.
 		self.sat_degree = []
 		for i in range(self.size**4):
 			self.sat_degree.append(set())
 
-		for y in range(self.size**2):
-			for x in range(self.size**2):
-				edges = self.edges[((n**2)*y) + x]
-				x_region = int(x/self.size)
-				y_region = int(y/self.size)
-				
-				#This adds edges to cells in the same region.
-				for x_prime in range(0,self.size):
-					for y_prime in range(0,self.size):
-						if (x_region*self.size) + x_prime != x or (y_region*self.size) + y_prime != y:
-							edges.append((self.size)*(y_region+y_prime)+(x_region+x_prime))
+		for v in range(self.size**4):
+			y = int(v/self.size**2)
+			x = v-(y*self.size**2)
 
-				#This adds edges to cells in the same column, outside the same region. 		
-				for row in range(n**2):
-					if int(row/self.size) != x_region:
-						edges.append((self.size*y)+row)
+			x_block = int(x/self.size)
+			y_block = int(y/self.size)
 
-				#This adds edges to the cells in the sme row, outside the same region.
-				for col in range(n**2):
-					if int(col/self.size) != y_region:
-						edges.append((self.size*col)+x)
+			#add edges to cells in the same block
+			for x_prime in range(self.size):
+				for y_prime in range(self.size):
+					u = y_block*(self.size**3)+y_prime*(self.size**2) + x_block*(self.size)+x_prime
+					if v != u:
+						self.edges[v].add(u)
+			
+			for x_prime in range(self.size**2):
+				u = (y*(self.size**2)) + x_prime
+				if v != u:
+					self.edges[v].add(u)
+
+			for y_prime in range(self.size**2):
+				u = (y_prime*(self.size**2)) + x
+				if v != u:
+					self.edges[v].add(u)
 
 	def __str__(self):
 		board = ''
@@ -76,8 +78,8 @@ class Graph:
 				else:
 					raise Exception('The given file contains invalid arguments.')
 	
-	def check_cell_color(self, vertex):
-		for neighbor in range(len(self.edges[vertex])):
-			if self.vertices[vertex] == self.vertices[neighbor] and neighbor != vertex:
+	def cell_color_valid(self, vertex):
+		for u in self.edges[vertex]:
+			if self.vertices[vertex] == self.vertices[u]:
 				return False
 		return True

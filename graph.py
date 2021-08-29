@@ -7,11 +7,6 @@ class Graph:
 		for i in range(self.size**4):
 			self.edges.append(set())
 		
-		#This will be used to dynamically track the saturation degree of each vertex, by tracking the size of the set of colors a vertex is adjacent to.
-		self.sat_degree = []
-		for i in range(self.size**4):
-			self.sat_degree.append(set())
-
 		for v in range(self.size**4):
 			y = int(v/self.size**2)
 			x = v-(y*self.size**2)
@@ -48,20 +43,12 @@ class Graph:
 					row += ' '+str(self.vertices[((self.size**2)*y)+x])
 				if (x+1)%self.size == 0:
 					row += '  '
-			
 			board += row+'\n'
 		
 			if (y+1)%self.size == 0:
 				board += '\n'
 			
 		return board
-
-	def update_sat_degree(self, vertex, color):
-		if color == 0:
-			raise Exception('Invalid argument')
-		else:
-			for neighbor in self.edges[vertex]:
-				self.sat_degree[neighbor].add(color)
 
 	def initial_assignment(self, file_name):
 		f = open(file_name)

@@ -2,9 +2,7 @@ class Graph:
 	def __init__(self, n: int):
 		#Degree of a vertex is 2((n**2)-1)+(n**2)-2n+1
 		self.size = n
-		self.vertices = []
-		for i in range(self.size**2):
-			self.vertices.append([0]*(self.size**2))
+		self.vertices = [0]*(self.size**4)
 		self.edges = []
 		for i in range(self.size**4):
 			self.edges.append([])
@@ -24,17 +22,17 @@ class Graph:
 				for x_prime in range(0,self.size):
 					for y_prime in range(0,self.size):
 						if (x_region*self.size) + x_prime != x or (y_region*self.size) + y_prime != y:
-							edges.append(((x_region*self.size) + x_prime, (y_region*self.size) + y_prime))
+							edges.append((self.size)*(y_region+y_prime)+(x_region+x_prime))
 
 				#This adds edges to cells in the same column, outside the same region. 		
 				for row in range(n**2):
 					if int(row/self.size) != x_region:
-						edges.append((row,y))
+						edges.append((self.size*y)+row)
 
 				#This adds edges to the cells in the sme row, outside the same region.
 				for col in range(n**2):
 					if int(col/self.size) != y_region:
-						edges.append((x,col))
+						edges.append((self.size*col)+x)
 
 	def __str__(self):
 		board = ''
@@ -46,10 +44,10 @@ class Graph:
 		for y in range(self.size**2):
 			row = '|'
 			for x in range(self.size**2):
-				if self.vertices[y][x] == 0:
+				if self.vertices[((self.size**2)*y)+x] == 0:
 					row +=' '
 				else:
-					row += str(self.vertices[y][x])
+					row += str(self.vertices[((self.size**2)*y)+x])
 				if (x+1)%self.size == 0:
 					row += '|'
 			
@@ -60,6 +58,13 @@ class Graph:
 			
 		return board
 
+	def update_sat_degree(self, vertex, color):
+		if color == 0:
+			raise Exception('Invalid argument')
+		else:
+			for neighbor in self.edges[vertex]:
+				self.sat_degree[neighbor].add(color)
+
 	def initial_assignment(self, file_name):
 		f = open(file_name)
 		lines = f.read().split()
@@ -68,12 +73,9 @@ class Graph:
 		else:
 			for c in range(len(lines)):
 				if int(lines[c]) >= 0 and int(lines[c]) <= (self.size**2):
-					y = int(c/(self.size**2))
-					x = c - (y*(self.size**2))
-					self.vertices[y][x] = int(lines[c])
+					self.vertices[c] = int(lines[c])
 					if int(lines[c]) != 0:
-						for v in self.edges[c]:
-							self.sat_degree[((self.size**2)*v[0])+v[1]].add(int(lines[c]))
+						self.update_sat_degree(c,int(lines[c]))
 
 				else:
 					raise Exception('The given file contains invalid arguments.')

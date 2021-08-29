@@ -36,25 +36,21 @@ class Graph:
 
 	def __str__(self):
 		board = ''
-		horizontal_edge = ''
-		for i in range((self.size**2)+(self.size-1)+2):
-			horizontal_edge += '-'
-		board += horizontal_edge+'\n'
 
 		for y in range(self.size**2):
-			row = '|'
+			row = ''
 			for x in range(self.size**2):
 				if self.vertices[((self.size**2)*y)+x] == 0:
-					row +=' '
+					row +=' #'
 				else:
-					row += str(self.vertices[((self.size**2)*y)+x])
+					row += ' '+str(self.vertices[((self.size**2)*y)+x])
 				if (x+1)%self.size == 0:
-					row += '|'
+					row += '  '
 			
 			board += row+'\n'
 		
 			if (y+1)%self.size == 0:
-				board += horizontal_edge+'\n'
+				board += '\n'
 			
 		return board
 
@@ -79,3 +75,9 @@ class Graph:
 
 				else:
 					raise Exception('The given file contains invalid arguments.')
+	
+	def check_cell_color(self, vertex):
+		for neighbor in range(len(self.edges[vertex])):
+			if self.vertices[vertex] == self.vertices[neighbor] and neighbor != vertex:
+				return False
+		return True

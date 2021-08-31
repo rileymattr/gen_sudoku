@@ -1,5 +1,5 @@
 class Graph:
-	def __init__(self, n: int):
+	def __init__(self, n: int, file_name):
 		#Degree of a vertex is 2((n**2)-1)+(n**2)-2n+1
 		self.size = n
 		self.vertices = [0]*(self.size**4)
@@ -30,6 +30,8 @@ class Graph:
 				u = (y_prime*(self.size**2)) + x
 				if v != u:
 					self.edges[v].add(u)
+			
+		self = self.initial_assignment(file_name)
 
 	def __str__(self):
 		board = ''
@@ -61,6 +63,7 @@ class Graph:
 					self.vertices[c] = int(lines[c])
 				else:
 					raise Exception('The given file contains invalid arguments.')
+		return self
 	
 	def cell_color_valid(self, vertex):
 		for u in self.edges[vertex]:

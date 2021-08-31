@@ -40,6 +40,8 @@ def backtracking_solver(graph):
 		
 		colored.put(v)
 
+def tabu_search_solver(graph):
+
 g = Graph(int(sys.argv[1]))
 g.initial_assignment(sys.argv[2])
 print(g)

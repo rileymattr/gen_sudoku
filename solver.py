@@ -1,5 +1,6 @@
 from graph import Graph
 import queue
+import sys, time
 
 def checker(graph):
 	for i in range(len(graph.edges)):
@@ -13,6 +14,7 @@ def checker(graph):
 	return True
 
 def backtracking_solver(graph):
+	#TODO: Change to_color to another data structure. Currect add takes too long.
 	to_color = queue.PriorityQueue()
 	colored = queue.LifoQueue()
 
@@ -37,3 +39,13 @@ def backtracking_solver(graph):
 				to_color.put((v,v))
 		
 		colored.put(v)
+
+g = Graph(int(sys.argv[1]))
+g.initial_assignment(sys.argv[2])
+print(g)
+print('solving...\n')
+start = time.time()
+backtracking_solver(g)
+end = time.time()
+print(g)
+print('It took {} seconds to solve this puzzle with back tracking.'.format(end-start))

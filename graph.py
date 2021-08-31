@@ -59,9 +59,6 @@ class Graph:
 			for c in range(len(lines)):
 				if int(lines[c]) >= 0 and int(lines[c]) <= (self.size**2):
 					self.vertices[c] = int(lines[c])
-					if int(lines[c]) != 0:
-						self.update_sat_degree(c,int(lines[c]))
-
 				else:
 					raise Exception('The given file contains invalid arguments.')
 	
